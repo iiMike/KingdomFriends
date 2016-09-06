@@ -62,105 +62,105 @@ class Main extends PluginBase  implements Listener {
                 $pc = $sender->getName();
                 if(strtolower($command->getName()) == "friend") {
                     if(empty($args)) {
-                            $sender->sendMessage(TextFormat::RED . "[iFriend] Usage:/friend <player-name> OR [accept/decline]");
+                            $sender->sendMessage(TextFormat::RED . "(Kingdom) Usage:/friend <player-name> OR [accept/decline]");
                             return true;
                     }
                     if(strtolower($args[0]) !== "accept" && strtolower($args[0]) !== "decline" && strtolower($args[0]) !== "tp" && strtolower($args[0]) !== "list") {
                         if(!isset($args[0])) {
-                            $sender->sendMessage(TextFormat::RED . "[iFriend] Usage:/friend <player-name> OR [accept/decline]");
+                            $sender->sendMessage(TextFormat::RED . "(Kingdom) Usage:/friend <player-name> OR [accept/decline]");
                             return true;
                         }
                         $max = $this->getConfig()->get("max-friends");
                         if(count($this->getAllFriends($player)) == $max) {
-                            $sender->sendMessage(TextFormat::RED . "[iFriend] You have the max amount of friends!");
+                            $sender->sendMessage(TextFormat::RED . "(Kingdom) You have the max amount of friends!");
                             return;
                         }
                         $friendexact =  $this->getServer()->getPlayer($args[0]);
                         if(!$friendexact instanceof Player) {
-                            $sender->sendMessage(TextFormat::RED . "[iFriend] Player not online!");
+                            $sender->sendMessage(TextFormat::RED . "(Kingdom) Player not online!");
                             return true;
                         }
                         $friend = strtolower($friendexact->getName());
                         $fc = $friendexact->getName();
                         if($this->areFriends($player, $friend)) {
-                            $sender->sendMessage(TextFormat::RED . "[iFriend] '$fc' is already your friend!");
+                            $sender->sendMessage(TextFormat::RED . "(Kingdom) "$fc' is already your friend!");
                             return true;
                         }
                         if($this->getUserTEMP($player, $friend)) {
-                            $sender->sendMessage(TextFormat::RED . "[iFriend] You already sent an request to '$friend'");
+                            $sender->sendMessage(TextFormat::RED . "(Kingdom)You already sent an request to '$friend'");
                             return true;
                         }
                         if(!file_exists($this->getDataFolder() . "Players/" . $player . ".yml")) {
                             $this->temp[$player] = $friend;
-                            $sender->sendMessage(TextFormat::GOLD . "[iFriend] '$fc' was asked to be your friend.");
-                            $friendexact->sendMessage(TextFormat::GOLD . "[iFriend] '$pc' wants to be your friend!\n".TextFormat::GRAY."Do \"/friend accept $pc\" to accept\n".TextFormat::GRAY."OR\n".TextFormat::GRAY."Do \"/friend decline $pc\" to decline");
+                            $sender->sendMessage(TextFormat::GOLD . "(Kingdom) '$fc' sent you a friend request.");
+                            $friendexact->sendMessage(TextFormat::GOLD . "(Kingdom) '$pc' sent you a friend request!\n".TextFormat::GRAY."Do \"/friend accept $pc\" to accept\n".TextFormat::GRAY."OR\n".TextFormat::GRAY."Do \"/friend decline $pc\" to decline");
                             return true;
                         }
                         if(file_exists($this->getDataFolder() . "Players/" . $player . ".yml")) {
                             $this->temp[$player] = $friend;
-                            $sender->sendMessage(TextFormat::GOLD . "[iFriend] '$fc' was asked to be your friend.");
-                            $friendexact->sendMessage(TextFormat::GOLD . "[iFriend] '$pc' wants to be your friend!\n".TextFormat::GRAY."Do \"/friend accept $pc\" to accept\n".TextFormat::GRAY."OR\n".TextFormat::GRAY."Do \"/friend decline $pc\" to decline");
+                            $sender->sendMessage(TextFormat::GOLD . "(Kingdom) '$fc' was asked to be your friend.");
+                            $friendexact->sendMessage(TextFormat::GOLD . "(Kingdom) '$pc' sent you a friend request!\n".TextFormat::GRAY."Do \"/friend accept $pc\" to accept\n".TextFormat::GRAY."OR\n".TextFormat::GRAY."Do \"/friend decline $pc\" to decline");
                             return true;
                         }
                     }
                     if(strtolower($args[0]) == "accept") {
                         if(empty($args[1])) {
-                            $sender->sendMessage(TextFormat::RED . "[iFriend] Usage:/friend [decline/accept] <player-name>");
+                            $sender->sendMessage(TextFormat::RED . "(Kingdom) Usage:/friend [decline/accept] <player-name>");
                             return true;
                         }
                         $friendexact =  $this->getServer()->getPlayer($args[1]);
                         if(!$friendexact instanceof Player) {
-                            $sender->sendMessage(TextFormat::RED . "[iFriend] Player not online!");
+                            $sender->sendMessage(TextFormat::RED . "(Kingdom) Player not online!");
                             return true;
                         }
                         $getsender = strtolower($friendexact->getName());
                         $friendname = $friendexact->getName();
                         if(!$this->getUserTEMP($getsender, $player)) {
-                            $sender->sendMessage(TextFormat::RED . "[iFriend] Player has not sent you a request!");
+                            $sender->sendMessage(TextFormat::RED . "(Kingdom) Player has not sent you a request!");
                             return true;
                         }
                         $playerget = strtolower($sender->getName());
                         $this->removeUserTEMP($getsender, strtolower($sender->getName()));
                         $this->setUser($getsender, $player);
-                        $sender->sendMessage(TextFormat::GOLD . "[iFriend] Request Accepted!");
-                        $sender->sendMessage(TextFormat::GOLD . "[iFriend] '$friendname' can now teleport to you.");
-                        $friendexact->sendMessage(TextFormat::GOLD . "[iFriend] Your request to '$player' was accepted!");
+                        $sender->sendMessage(TextFormat::GOLD . "(Kingdom) Request Accepted!");
+                        $sender->sendMessage(TextFormat::GOLD . "(Kingdom) '$friendname' will be happy.");
+                        $friendexact->sendMessage(TextFormat::GOLD . "(Kingdom) Your request to '$player' was accepted! Hooray!");
                         return true;
                     }
                     if(strtolower($args[0]) == "decline") {
                         if(empty($args[1])) {
-                            $sender->sendMessage(TextFormat::RED . "[iFriend] Usage:/friend [decline/accept] <player-name>");
+                            $sender->sendMessage(TextFormat::RED . "(Kingdom) Usage:/friend [decline/accept] <player-name>");
                             return true;
                         }
                         $friendexact =  $this->getServer()->getPlayer($args[1]);
                         if(!$friendexact instanceof Player) {
-                            $sender->sendMessage(TextFormat::RED . "[iFriend] Player not online!");
+                            $sender->sendMessage(TextFormat::RED . "(Kingdom) Player not online!");
                             return true;
                         }
                         $getsender = strtolower($friendexact->getName());
                         if(!$this->getUserTEMP($getsender, $player)) {
-                            $sender->sendMessage(TextFormat::RED . "[iFriend] Player has not sent you a request!");
+                            $sender->sendMessage(TextFormat::RED . "(Kingdom)Player has not sent you a request!");
                             return true;
                         }
                         $this->removeUserTEMP($getsender, $player);
-                        $sender->sendMessage(TextFormat::GOLD . "[iFriend] Request Declined!");
-                        $friendexact->sendMessage(TextFormat::GOLD . "[iFriend] Your request to '$player' was declined!");
+                        $sender->sendMessage(TextFormat::GOLD . "(Kingdom) Request Declined! But you probably hurt their feelings.");
+                        $friendexact->sendMessage(TextFormat::GOLD . "(Kingdom) Your request to '$player' was declined! I do not like him.");
                         return true;
                     }
                     if(strtolower($args[0]) == "tp") {
                         if(empty($args[1])) {
-                            $sender->sendMessage(TextFormat::RED . "[iFriend] Usage:/friend tp <player-name>");
+                            $sender->sendMessage(TextFormat::RED . "(Kingdom) Usage:/friend tp <player-name>");
                             return true;
                         }
                         $friend = $this->getServer()->getPlayer($args[1]);
                         if(!$friend instanceof Player) {
-                            $sender->sendMessage(TextFormat::RED . "[iFriend] Player not online!");
+                            $sender->sendMessage(TextFormat::RED . "(Kingdom) Player not online!");
                             return true;
                         }
                         $fname = strtolower($friend->getName());
                         $fc = $friend->getName();
                         if(!$this->areFriends($player, $fname)) {
-                            $sender->sendMessage(TextFormat::RED . "[iFriend] '$fc' is not your friend!");
+                            $sender->sendMessage(TextFormat::RED . "(Kingdom) '$fc' is not your friend :/");
                             return true;
                         }
                         $name = $sender->getName();
@@ -171,7 +171,7 @@ class Main extends PluginBase  implements Listener {
                     }
                     if(strtolower($args[0]) == "list") {
                         if(!$this->hasFriends($player)) {
-                            $sender->sendMessage(TextFormat::RED . "[iFriend] You have no friends!");
+                            $sender->sendMessage(TextFormat::RED . "(Kingdom) forever alone ;-;");
                             return;
                         }
                         $friends = $a = new Config($this->getDataFolder() . "Players/" . $player . ".yml", CONFIG::YAML);
@@ -187,17 +187,17 @@ class Main extends PluginBase  implements Listener {
                 }
                 if(strtolower($command->getName()) == "unfriend") {
                     if(empty($args[0])) {
-                        $sender->sendMessage(TextFormat::RED . "[iFriend] Usage:/unfriend <player-name>");
+                        $sender->sendMessage(TextFormat::RED . "(Kingdom) you unfriend with the Usage:/unfriend <player-name> but it is kind of mean");
                         return true;
                     }
                     $friend = strtolower($args[0]);
                     if(!$this->areFriends($player, $friend)) {
-                        $sender->sendMessage(TextFormat::RED . "[iFriend] '$friend' is not your friend!");
+                        $sender->sendMessage(TextFormat::RED . "(Kingdom) '$friend' is not your friend!");
                         return true;
                     }
                     if($this->areFriends($player, $friend)) {
                         $this->removeUser($player, $friend);
-                        $sender->sendMessage(TextFormat::GOLD . "[iFriend] '$friend' is no longer your friend!");
+                        $sender->sendMessage(TextFormat::GOLD . "(Kingdom) '$friend' is no longer your friend :(");
                     }
                 }
             }
